@@ -6,6 +6,11 @@ const flash = require('express-flash');
 
 const app = express();
 const conn = require('./db/conn.js')
+
+// Models
+const Tought = require('./models/Tought.js');
+const User = require('./models/User.js');
+
 const port = 3000;
 
 // configurando handlebars
