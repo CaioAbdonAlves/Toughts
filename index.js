@@ -13,6 +13,7 @@ const User = require('./models/User.js');
 
 //Routes
 const thoughtsRoutes = require('./routes/toughtsRoutes.js');
+const authRoutes = require('./routes/authRoutes.js');
 
 // import Controller
 const ToughtController = require('./controllers/ToughtController.js');
@@ -30,6 +31,7 @@ app.use(express.json());
 app.use(express.static('public'));
 
 app.use('/toughts', thoughtsRoutes);
+app.use('/', authRoutes);
 
 app.get('/', ToughtController.showToughts);
 
