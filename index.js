@@ -11,6 +11,12 @@ const conn = require('./db/conn.js')
 const Tought = require('./models/Tought.js');
 const User = require('./models/User.js');
 
+//Routes
+const thoughtsRoutes = require('./routes/toughtsRoutes.js');
+
+// import Controller
+const ToughtController = require('./controllers/ToughtController.js');
+
 const port = 3000;
 
 // configurando handlebars
@@ -22,6 +28,10 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
 app.use(express.static('public'));
+
+app.use('/toughts', thoughtsRoutes);
+
+app.get('/', ToughtController.showToughts);
 
 // session middleware
 app.use(
