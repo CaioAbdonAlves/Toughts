@@ -22,5 +22,15 @@ module.exports = class AuthController {
 
             return;
         }
+
+        //check if user exists
+        const checkIfUserExists = await User.findOne({where: {email: email}});
+
+        if(checkIfUserExists) {
+            req.flash("message", "Já existe um usuário com este e-mail!");
+            res.render('auth/register');
+
+            return;
+        }
     }
 }
