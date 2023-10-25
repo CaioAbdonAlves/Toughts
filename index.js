@@ -20,21 +20,6 @@ const ToughtController = require('./controllers/ToughtController.js');
 
 const port = 3000;
 
-// configurando handlebars
-app.engine('handlebars', exphbs.engine());
-app.set('view engine', 'handlebars');
-
-// receber resposta do body
-app.use(express.urlencoded({extended: true}));
-app.use(express.json());
-
-app.use(express.static('public'));
-
-app.use('/toughts', thoughtsRoutes);
-app.use('/', authRoutes);
-
-app.get('/', ToughtController.showToughts);
-
 // session middleware
 app.use(
     session({
@@ -57,6 +42,21 @@ app.use(
 
 // flash messages
 app.use(flash());
+
+// configurando handlebars
+app.engine('handlebars', exphbs.engine());
+app.set('view engine', 'handlebars');
+
+// receber resposta do body
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
+
+app.use(express.static('public'));
+
+app.use('/toughts', thoughtsRoutes);
+app.use('/', authRoutes);
+
+app.get('/', ToughtController.showToughts);
 
 // set session to response
 app.use((req, res, next) => {
