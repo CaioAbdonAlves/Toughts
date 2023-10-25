@@ -40,6 +40,14 @@ app.use(
     })
 );
 
+// set session to response
+app.use((req, res, next) => {
+    if(req.session.userid) {
+        res.locals.session = req.session
+    }
+    next();
+});
+
 // flash messages
 app.use(flash());
 
@@ -57,14 +65,6 @@ app.use('/toughts', thoughtsRoutes);
 app.use('/', authRoutes);
 
 app.get('/', ToughtController.showToughts);
-
-// set session to response
-app.use((req, res, next) => {
-    if(req.session.userid) {
-        res.locals.session = req.session
-    }
-    next();
-});
 
 conn.sync()
     .then(() => {
