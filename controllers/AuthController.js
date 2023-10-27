@@ -8,6 +8,37 @@ module.exports = class AuthController {
         res.render('auth/login')
     }
 
+    static async loginPost(req, res) {
+        const { email, password } = req.body;
+
+        // find user
+        const userExists = await User.findOne({where: {email: email}});
+
+        if(!userExists) {
+            req.flash("message", "O usuário informado não existe!");
+            res.render('auth/login');
+            return;
+        }
+
+        // check if passwords match
+        const passwordMatch = bcrypt.compareSync(password, userExists.password);
+
+        if(!passwordMatch) {
+            req.flash("message", "Senha incorreta!");
+            res.render('auth/login');
+            return;
+        }
+
+        req.session.userid = userExists.id;
+
+        req.flash("message", "Autenticado com sucesso!");
+
+        req.session.save(() => {
+            res.redirect('/');
+        });
+        
+    }
+
     static register(req, res) {
         res.render('auth/register')
     }
@@ -48,7 +79,6 @@ module.exports = class AuthController {
 
             // initialize session
             req.session.userid = createdUser.id;
-            console.log(req.session.userid)
 
             req.flash("message", "Cadastro realizado com sucesso!");
 
@@ -58,5 +88,10 @@ module.exports = class AuthController {
         } catch(error) {
             console.log(`Ocorreu um erro ao registrar o usuário: ${error}`);
         }
+    }
+
+    static logout(req, res) {
+        req.session.destroy();
+        res.redirect('/login');
     }
 }
